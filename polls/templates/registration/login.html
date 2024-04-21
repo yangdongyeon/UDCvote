@@ -1,0 +1,119 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>KAIST UDC Voting System</title>
+    <style>
+        /* 헤더 */
+        header {
+            background-color: #3498db; /* 파란색 */
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* 컨테이너 스타일 */
+        .container {
+            width: 300px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 중앙 정렬 텍스트 */
+        h2 {
+            text-align: center;
+        }
+
+        /* 폼 스타일 */
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* 입력 필드 스타일 */
+        input[type='text'],
+        input[type='password'],
+        button {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        /* 버튼 스타일 */
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+        }
+
+        /* 버튼 호버 효과 */
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* 에러 메시지 스타일 */
+        .errorlist {
+            color: red;
+            font-size: 0.9em;
+        }
+
+        /* 푸터 */
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>KAIST UDC Voting System</h1>
+    </header>
+    <div class="container">
+        <h2>Login</h2>
+        <form method="post">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+                <div class="errorlist">
+                    {{ form.non_field_errors }}
+                </div>
+            {% endif %}
+            <div>
+                {{ form.username.label_tag }}
+                {{ form.username }}
+                {% if form.username.errors %}
+                    <div class="errorlist">
+                        {{ form.username.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <div>
+                {{ form.password.label_tag }}
+                {{ form.password }}
+                {% if form.password.errors %}
+                    <div class="errorlist">
+                        {{ form.password.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <button type="submit">Login</button>
+        </form>
+    </div>
+    <footer>
+        <p>&copy; 2024 KAIST Pannorm. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+

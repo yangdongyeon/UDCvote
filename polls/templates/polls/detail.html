@@ -1,0 +1,134 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>KAIST UDC Voting System</title>
+    <style>
+        /* 헤더 */
+        header {
+            background-color: #3498db; /* 파란색 */
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* 본문 */
+        body {
+            background-color: #f3f3f3; /* 회색 */
+            color: black;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .question-box, .choice-box, .submit-button {
+            border: 1px solid #ddd;
+            background-color: #f2f2f2;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .question-box {
+            background-color: #d0d0d0; /* 더 진한 배경색 */
+            text-align: center;
+        }
+
+        .choice-box {
+            display: block;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .choice-box:hover, .choice-box input[type="radio"]:checked + label {
+            background-color: #e2e2e2;
+        }
+
+        .choice-box input[type="radio"] {
+            opacity: 0;
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .choice-box label {
+            display: block;
+            cursor: pointer;
+            padding: 15px;
+            width: 100%;
+            height: 100%;
+            margin: -15px;
+            border-radius: 10px;
+        }
+
+        .submit-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            text-align: center;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border-radius: 10px;
+        }
+
+        .submit-button:hover {
+            background-color: #45a049;
+        }
+        
+        /* 푸터 */
+        footer {
+            background-color: #2c3e50; /* 짙은 파란색 */
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>KAIST UDC Voting System</h1>
+    </header>
+    <div class="container">
+        <form action="{% url 'polls:vote' question.id %}" method="post">
+            {% csrf_token %}
+            <div class="question-box">
+                <h1>{{ question.question_text }}</h1>
+            </div>
+            {% if error_message %}
+                <p class="error-message"><strong>{{ error_message }}</strong></p>
+            {% endif %}
+            {% for choice in question.choice_set.all %}
+                <div class="choice-box">
+                    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+                    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label>
+                </div>
+            {% endfor %}
+            <button type="submit" class="submit-button">Vote</button>
+        </form>
+    </div>
+    <footer>
+        <p>&copy; 2024 KAIST UDC. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+
+

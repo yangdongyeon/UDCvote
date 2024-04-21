@@ -1,0 +1,70 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>투표 오류</title>
+    <style>
+        /* 헤더 */
+        header {
+            background-color: #3498db; /* 파란색 */
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* 본문 */
+        body {
+            background-color: #f3f3f3; /* 회색 */
+            color: black;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 에러 메시지 */
+        .error-message {
+            color: red;
+            margin: 20px;
+            text-align: center;
+        }
+
+        /* 홈 링크 */
+        .home-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* 푸터 */
+        footer {
+            background-color: #2c3e50; /* 짙은 파란색 */
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>KAIST UDC Voting System</h1>
+    </header>
+    <div class="container">
+        <div class="error-message">
+            <h2>이미 투표하였습니다</h2>
+        </div>
+        <div class="home-link">
+            <a href="{% url 'polls:index' %}">메인 페이지로 돌아가기</a>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 KAIST UDC. All rights reserved.</p>
+    </footer>
+</body>
+</html>
+

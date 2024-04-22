@@ -74,10 +74,13 @@
 
         /* Chat style adjustments */
         #chat-container {
-            margin-top: 20px;
+            position: fixed;
+            width: 100%;
+            bottom: 50px;
             background-color: #f2f2f2;
             border-radius: 5px;
             padding: 10px;
+            z-index: 100; /* Ensure it's above other elements */
         }
 
         #chat-log {
@@ -129,8 +132,8 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Issue</th>
-                        <th>Voting Time</th>
+                        <th>안건</th>
+                        <th>표결일시</th>
                     </tr>
                 </thead>
                 <tbody>

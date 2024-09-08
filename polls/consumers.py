@@ -1,6 +1,6 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
-from .models import ChatMessage
+from django.apps import apps  # ChatMessage 모델을 동적으로 가져오기 위해 사용
 import json
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -73,8 +73,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def save_message(self, username, message):
-        # Assuming ChatMessage model exists and has user and message fields
-        from .models import ChatMessage, User
+        # 동적으로 ChatMessage 모델을 가져옴
+        ChatMessage = apps.get_model('polls', 'ChatMessage')
+        from django.contrib.auth.models import User
         # Retrieve the user by username
         user = User.objects.get(username=username)
         # Create the chat message
@@ -82,8 +83,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def get_chat_history(self):
+        # 동적으로 ChatMessage 모델을 가져옴
+        ChatMessage = apps.get_model('polls', 'ChatMessage')
         # Get the last 50 chat messages ordered by timestamp
         return ChatMessage.objects.order_by('-timestamp').values('user__username', 'message', 'timestamp')[:50]
+
 
 
 

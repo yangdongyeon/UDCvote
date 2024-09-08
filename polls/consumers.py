@@ -1,6 +1,5 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
-from .models import ChatMessage
 import json
 
 class ChatConsumer(AsyncWebsocketConsumer):
@@ -17,12 +16,23 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         # Load the last 50 chat messages when a user connects
         messages = await self.get_chat_history()
-        for message in messages:
-            await self.send(text_data=json.dumps({
-                'message': message['message'],
-                'username': message['user__username'],
-                'timestamp': str(message['timestamp'])
-            }))
+
+        # 로그로 데이터 확인
+        if not messages:
+            print("No messages found.")
+        else:
+            for message in messages:
+                print(message)  # 각 메시지 출력
+
+                # 데이터 유효성 검사
+                if 'message' in message and 'user__username' in message and 'timestamp' in message:
+                    await self.send(text_data=json.dumps({
+                        'message': message['message'],
+                        'username': message['user__username'],
+                        'timestamp': str(message['timestamp'])
+                    }))
+                else:
+                    print("Invalid message data format:", message)
 
     async def disconnect(self, close_code):
         # Leave chat group
@@ -73,5 +83,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def get_chat_history(self):
         # Get the last 50 chat messages ordered by timestamp
         return ChatMessage.objects.order_by('-timestamp').values('user__username', 'message', 'timestamp')[:50]
+
 
 

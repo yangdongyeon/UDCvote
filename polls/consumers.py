@@ -14,6 +14,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         await self.accept()
 
+        # Load the last 50 chat messages when a user connects
+        messages = await self.get_chat_history()
+        for message in messages:
+            await self.send(text_data=json.dumps({
+                'message': message['message'],
+                'username': message['user__username'],
+                'timestamp': str(message['timestamp'])
+            }))
+
     async def disconnect(self, close_code):
         # Leave chat group
         await self.channel_layer.group_discard(
@@ -58,4 +67,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
         user = User.objects.get(username=username)
         # Create the chat message
         ChatMessage.objects.create(user=user, message=message)
+
+    @database_sync_to_async
+    def get_chat_history(self):
+        # Get the last 50 chat messages ordered by timestamp
+        return ChatMessage.objects.order_by('-timestamp').values('user__username', 'message', 'timestamp')[:50]
+
 

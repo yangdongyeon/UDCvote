@@ -18,6 +18,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # Load the last 50 chat messages when a user connects
         messages = await self.get_chat_history()
 
+        # 비동기 데이터베이스 접근 문제 해결을 위해 명시적으로 리스트로 변환
+        messages = list(messages)
+
         # 로그로 데이터 확인
         if not messages:
             print("No messages found.")

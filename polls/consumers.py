@@ -22,7 +22,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         if not messages:
             print("No messages found.")
         else:
-            for message in messages:
+            # 역순으로 메시지 출력
+            for message in reversed(messages):
                 print(message)  # 각 메시지 출력
 
                 # 데이터 유효성 검사
@@ -85,7 +86,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
     def get_chat_history(self):
         # 동적으로 ChatMessage 모델을 가져옴
         ChatMessage = apps.get_model('polls', 'ChatMessage')
-        # Get the last 50 chat messages ordered by timestamp
+        # Get the last 50 chat messages ordered by timestamp (recent messages first)
         return list(ChatMessage.objects.order_by('-timestamp').values('user__username', 'message', 'timestamp')[:50])
 
 
